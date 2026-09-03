@@ -1,0 +1,30 @@
+# Local / environment
+app/config.local.php
+.env
+.env.*
+
+# Uploads & temp (keep folder structure via nested .gitignore)
+public/uploads/**
+!public/uploads/.gitignore
+!public/uploads/**/.gitignore
+storage/temp/**
+!storage/temp/.gitignore
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs & caches
+*.log
+storage/logs/
+storage/cache/
+
+# Archives / local packaging
+*.zip
+*.rar
+*.7z

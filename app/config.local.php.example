@@ -1,0 +1,22 @@
+<?php
+/**
+ * Local overrides. Rename this file to config.local.php.
+ * Only list the keys you want to change — they are merged over app/config.php.
+ */
+
+return [
+    'app_env'   => 'local',
+    'app_debug' => true,
+    // When the project lives in htdocs/lenscraft, the site runs at
+    // http://localhost/lenscraft/public — set base_url accordingly.
+    'base_url'  => '/lenscraft/public',
+
+    'db' => [
+        'host' => '127.0.0.1',
+        'port' => 3306,
+        'name' => 'lenscraft',
+        'user' => 'root',
+        'pass' => '',
+        'charset' => 'utf8mb4',
+    ],
+];

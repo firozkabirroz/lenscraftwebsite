@@ -1,0 +1,26 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve existing files (assets, uploads) directly.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes through the front controller.
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+<IfModule mod_php.c>
+    php_value upload_max_filesize 64M
+    php_value post_max_size 68M
+    php_value max_execution_time 300
+</IfModule>
+
+# Never execute anything inside the uploads folder.
+<FilesMatch "\.(php|phtml|phar|cgi|pl)$">
+    <If "%{REQUEST_URI} =~ m#^.*/uploads/#">
+        Require all denied
+    </If>
+</FilesMatch>
