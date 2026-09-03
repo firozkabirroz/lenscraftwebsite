@@ -1,15 +1,20 @@
 <?php
 /**
- * Local overrides. Rename this file to config.local.php.
+ * Local / server overrides. Copy to config.local.php (never commit that file).
  * Only list the keys you want to change — they are merged over app/config.php.
  */
 
 return [
+    // local | production
     'app_env'   => 'local',
     'app_debug' => true,
-    // When the project lives in htdocs/lenscraft, the site runs at
-    // http://localhost/lenscraft/public — set base_url accordingly.
+
+    // '' when the site is at the domain root (typical cPanel public_html).
+    // '/lenscraft/public' when served from a subfolder under XAMPP.
     'base_url'  => '/lenscraft/public',
+
+    // Used by public/git-deploy.php (GitHub webhook). Set a long random string on live.
+    // 'deploy_secret' => 'change-me-to-a-long-random-string',
 
     'db' => [
         'host' => '127.0.0.1',

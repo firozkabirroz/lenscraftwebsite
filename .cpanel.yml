@@ -1,0 +1,19 @@
+---
+# cPanel Git Version Control — runs after each push when
+# "Automatically Deploy" is enabled for this repository.
+#
+# SETUP:
+# 1. In cPanel → Git Version Control, clone this repo to a folder
+#    (example: /home/YOUR_USER/repositories/lenscraft).
+# 2. Replace YOUR_USER below with your real cPanel username.
+# 3. Set DEPLOYPATH to your live site root (usually public_html).
+# 4. Create app/config.local.php ONCE on the live server
+#    (copy from config.local.php.example). Never commit it.
+# 5. Enable Automatic Deployment for the repository.
+#
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/YOUR_USER/public_html/
+    - /usr/bin/rsync -a --delete --exclude='.git' --exclude='.gitignore' --exclude='app/config.local.php' --exclude='public/uploads' --exclude='storage/temp' --exclude='.cpanel.yml' ./ "$DEPLOYPATH"
+    - /bin/mkdir -p "$DEPLOYPATH/public/uploads/images" "$DEPLOYPATH/public/uploads/videos" "$DEPLOYPATH/public/uploads/thumbs" "$DEPLOYPATH/storage/temp"
+    - /bin/chmod -R u+rwX "$DEPLOYPATH/public/uploads" "$DEPLOYPATH/storage/temp" 2>/dev/null || true
