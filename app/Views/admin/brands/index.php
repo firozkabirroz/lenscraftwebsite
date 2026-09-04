@@ -8,7 +8,21 @@
             <tbody>
             <?php foreach ($brands as $brand): ?>
                 <tr>
-                    <td class="mono"><?= str_pad((string) $brand['sort_order'], 2, '0', STR_PAD_LEFT) ?></td>
+                    <td>
+                        <div class="order-controls">
+                            <form method="post" action="<?= url('/admin/brands/' . $brand['id'] . '/move') ?>">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="direction" value="up">
+                                <button class="link" type="submit" title="Move up">↑</button>
+                            </form>
+                            <span class="mono"><?= str_pad((string) $brand['sort_order'], 2, '0', STR_PAD_LEFT) ?></span>
+                            <form method="post" action="<?= url('/admin/brands/' . $brand['id'] . '/move') ?>">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="direction" value="down">
+                                <button class="link" type="submit" title="Move down">↓</button>
+                            </form>
+                        </div>
+                    </td>
                     <td><strong><?= e($brand['name']) ?></strong></td>
                     <td>
                         <?php if ($brand['logo_path']): ?>

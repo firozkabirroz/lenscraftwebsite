@@ -110,6 +110,14 @@ class ProjectController extends Controller
         redirect('/admin/projects');
     }
 
+    public function move(string $id): void
+    {
+        $this->postGuard();
+        Project::move((int) $id, (string) input('direction', 'down'));
+        $category = (string) input('category', '');
+        redirect('/admin/projects' . ($category !== '' ? '?category=' . urlencode($category) : ''));
+    }
+
     private function payload(): array
     {
         return [

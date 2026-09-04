@@ -36,6 +36,10 @@ class Uploader
 
         [$width, $height] = self::dimensions($target, $mime);
 
+        if (!$isDoc && str_starts_with($mime, 'image/') && $mime !== 'image/svg+xml') {
+            self::normalizeLogo($target, $name);
+        }
+
         $id = Database::insert('media', [
             'title'      => $title !== '' ? $title : pathinfo($file['name'], PATHINFO_FILENAME),
             'filename'   => $name,
@@ -190,5 +194,97 @@ class Uploader
         $stem = slugify(pathinfo($originalName, PATHINFO_FILENAME));
 
         return substr($stem, 0, 60) . '-' . date('YmdHis') . '-' . substr(bin2hex(random_bytes(4)), 0, 6) . '.' . $ext;
+    }
+
+    /**
+     * Fit any logo into a 640×240 transparent canvas (contain, centered)
+     * so the brand strip always looks even regardless of upload size.
+     */
+    public static function normalizeLogo(string $sourcePath, string $originalName): ?string
+    {
+        if (!function_exists('imagecreatetruecolor')) {
+            return null;
+        }
+
+        $info = @getimagesize($sourcePath);
+        if (!$info) {
+            return null;
+        }
+
+        [$srcW, $srcH] = [(int) $info[0], (int) $info[1]];
+        if ($srcW < 1 || $srcH < 1) {
+            return null;
+        }
+
+        $src = match ($info[2]) {
+            IMAGETYPE_JPEG => @imagecreatefromjpeg($sourcePath),
+            IMAGETYPE_PNG  => @imagecreatefrompng($sourcePath),
+            IMAGETYPE_WEBP => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($sourcePath) : false,
+            IMAGETYPE_GIF  => @imagecreatefromgif($sourcePath),
+            default        => false,
+        };
+
+        if ($src === false) {
+            return null;
+        }
+
+        $canvasW = 640;
+        $canvasH = 240;
+        $scale = min($canvasW / $srcW, $canvasH / $srcH, 1.0);
+        $dstW = max(1, (int) round($srcW * $scale));
+        $dstH = max(1, (int) round($srcH * $scale));
+        $dstX = (int) (($canvasW - $dstW) / 2);
+        $dstY = (int) (($canvasH - $dstH) / 2);
+
+        $canvas = imagecreatetruecolor($canvasW, $canvasH);
+        imagealphablending($canvas, false);
+        imagesavealpha($canvas, true);
+        $transparent = imagecolorallocatealpha($canvas, 0, 0, 0, 127);
+        imagefilledrectangle($canvas, 0, 0, $canvasW, $canvasH, $transparent);
+        imagealphablending($canvas, true);
+        imagecopyresampled($canvas, $src, $dstX, $dstY, 0, 0, $dstW, $dstH, $srcW, $srcH);
+
+        $thumbDir = rtrim(config('uploads')['thumb_dir'], '/\\');
+        if (!is_dir($thumbDir) && !mkdir($thumbDir, 0775, true) && !is_dir($thumbDir)) {
+            imagedestroy($src);
+            imagedestroy($canvas);
+
+            return null;
+        }
+
+        $logoName = 'logo-' . pathinfo($originalName, PATHINFO_FILENAME) . '.png';
+        $logoName = preg_replace('/[^a-zA-Z0-9._-]/', '-', $logoName) ?: ('logo-' . time() . '.png');
+        $dest = $thumbDir . DIRECTORY_SEPARATOR . $logoName;
+        imagepng($canvas, $dest, 6);
+        imagedestroy($src);
+        imagedestroy($canvas);
+
+        return 'thumbs/' . $logoName;
+    }
+
+    public static function logoPath(?string $relativePath): ?string
+    {
+        if (!$relativePath) {
+            return null;
+        }
+
+        $base = dirname(config('uploads')['image_dir']);
+        $full = $base . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $relativePath);
+        $stem = pathinfo($relativePath, PATHINFO_FILENAME);
+        $logoRel = 'thumbs/logo-' . $stem . '.png';
+        $logoFull = $base . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $logoRel);
+
+        if (is_file($logoFull)) {
+            return $logoRel;
+        }
+
+        if (is_file($full) && function_exists('imagecreatetruecolor')) {
+            $created = self::normalizeLogo($full, basename($relativePath));
+            if ($created) {
+                return $created;
+            }
+        }
+
+        return $relativePath;
     }
 }

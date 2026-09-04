@@ -18,10 +18,9 @@
     <div class="grid grid--work">
         <?php foreach ($projects as $project): ?>
             <a class="card-work" href="<?= url('/work/' . $project['slug']) ?>"<?= preview_attrs($project['hero_video_url'] ?? '') ?>>
-                <div class="card-work__thumb" <?= $project['cover_path'] ? 'style="background-image:url(' . e(uploaded($project['cover_path'])) . ')"' : '' ?>>
-                    <span class="card-work__cat"><?= e($project['category']) ?></span>
-                </div>
+                <div class="card-work__thumb" <?= $project['cover_path'] ? 'style="background-image:url(' . e(uploaded($project['cover_path'])) . ')"' : '' ?>></div>
                 <div class="card-work__body">
+                    <span class="card-work__cat"><?= e($project['category']) ?></span>
                     <h3><?= e($project['title']) ?></h3>
                     <p><?= e($project['summary'] ?: excerpt($project['description'], 90)) ?></p>
                     <span class="card-work__meta"><?= e($project['client_name'] ?: 'LensCraft') ?> · <?= e((string) $project['year']) ?></span>

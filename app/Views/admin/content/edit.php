@@ -40,12 +40,16 @@
                         <?php $rows = $rows ?: [array_fill_keys(array_keys($meta['fields']), '')]; ?>
                         <?php foreach ($rows as $row): ?>
                             <div class="repeater__row repeater__row--stack" data-repeater-row>
+                                <div class="repeater__tools">
+                                    <button type="button" class="link" data-repeater-up title="Move up">↑</button>
+                                    <button type="button" class="link" data-repeater-down title="Move down">↓</button>
+                                    <button type="button" class="link link--danger" data-repeater-remove>Remove</button>
+                                </div>
                                 <?php foreach ($meta['fields'] as $subKey => $subLabel): ?>
                                     <input type="text" name="<?= e($key . '_' . $subKey) ?>[]"
                                            value="<?= e((string) ($row[$subKey] ?? '')) ?>"
                                            placeholder="<?= e($subLabel) ?>">
                                 <?php endforeach; ?>
-                                <button type="button" class="link link--danger" data-repeater-remove>Remove</button>
                             </div>
                         <?php endforeach; ?>
                     </div>

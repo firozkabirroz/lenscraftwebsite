@@ -42,19 +42,35 @@
 
     document.addEventListener('click', function (event) {
         var remove = event.target.closest('[data-repeater-remove]');
-        if (!remove) {
+        if (remove) {
+            var row = remove.closest('[data-repeater-row]');
+            var repeater = row ? row.parentElement : null;
+
+            if (row && repeater && repeater.querySelectorAll('[data-repeater-row]').length > 1) {
+                row.remove();
+            } else if (row) {
+                row.querySelectorAll('input').forEach(function (input) {
+                    input.value = '';
+                });
+            }
             return;
         }
 
-        var row = remove.closest('[data-repeater-row]');
-        var repeater = row ? row.parentElement : null;
+        var up = event.target.closest('[data-repeater-up]');
+        if (up) {
+            var rowUp = up.closest('[data-repeater-row]');
+            if (rowUp && rowUp.previousElementSibling) {
+                rowUp.parentElement.insertBefore(rowUp, rowUp.previousElementSibling);
+            }
+            return;
+        }
 
-        if (row && repeater && repeater.querySelectorAll('[data-repeater-row]').length > 1) {
-            row.remove();
-        } else if (row) {
-            row.querySelectorAll('input').forEach(function (input) {
-                input.value = '';
-            });
+        var down = event.target.closest('[data-repeater-down]');
+        if (down) {
+            var rowDown = down.closest('[data-repeater-row]');
+            if (rowDown && rowDown.nextElementSibling) {
+                rowDown.parentElement.insertBefore(rowDown.nextElementSibling, rowDown);
+            }
         }
     });
 

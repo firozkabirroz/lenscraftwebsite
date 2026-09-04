@@ -19,7 +19,23 @@
         <tbody>
         <?php foreach ($projects as $project): ?>
             <tr>
-                <td class="mono"><?= str_pad((string) $project['sort_order'], 2, '0', STR_PAD_LEFT) ?></td>
+                <td>
+                    <div class="order-controls">
+                        <form method="post" action="<?= url('/admin/projects/' . $project['id'] . '/move') ?>">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="direction" value="up">
+                            <input type="hidden" name="category" value="<?= e($active) ?>">
+                            <button class="link" type="submit" title="Move up">↑</button>
+                        </form>
+                        <span class="mono"><?= str_pad((string) $project['sort_order'], 2, '0', STR_PAD_LEFT) ?></span>
+                        <form method="post" action="<?= url('/admin/projects/' . $project['id'] . '/move') ?>">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="direction" value="down">
+                            <input type="hidden" name="category" value="<?= e($active) ?>">
+                            <button class="link" type="submit" title="Move down">↓</button>
+                        </form>
+                    </div>
+                </td>
                 <td>
                     <div class="cell-media">
                         <span class="thumb" <?= $project['cover_path'] ? 'style="background-image:url(' . e(uploaded($project['cover_path'])) . ')"' : '' ?>></span>

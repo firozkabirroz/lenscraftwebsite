@@ -69,6 +69,13 @@ class BrandController extends Controller
         redirect('/admin/brands');
     }
 
+    public function move(string $id): void
+    {
+        $this->postGuard();
+        Brand::move((int) $id, (string) input('direction', 'down'));
+        redirect('/admin/brands');
+    }
+
     private function payload(string $name): array
     {
         return [

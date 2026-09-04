@@ -51,6 +51,14 @@ function uploaded(?string $path): string
     return rtrim((string) config('base_url'), '/') . '/uploads/' . ltrim($path, '/');
 }
 
+/** Brand-strip logos: prefer auto-fitted PNG when available. */
+function brand_logo(?string $path): string
+{
+    $fitted = \App\Support\Uploader::logoPath($path);
+
+    return uploaded($fitted ?: $path);
+}
+
 function redirect(string $path): never
 {
     header('Location: ' . (str_starts_with($path, 'http') ? $path : url($path)));

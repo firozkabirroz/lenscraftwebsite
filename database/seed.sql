@@ -19,6 +19,7 @@ DELETE FROM bookings;
 DELETE FROM clients;
 DELETE FROM brands;
 DELETE FROM packages;
+DELETE FROM team_members;
 DELETE FROM project_media;
 DELETE FROM videos;
 DELETE FROM projects;
@@ -62,6 +63,7 @@ INSERT INTO content_sections (page, section_key, title, description, data, updat
 ('about', 'hero', 'About Hero', 'Heading for the about page', '{"heading":"About LensCraft","subheading":"A production house with a crew that has been shooting together for a decade."}', 1),
 ('about', 'vision', 'Vision & Mission', 'Studio vision and mission', '{"vision":"To make Bangladeshi stories that travel — films that hold up on a festival screen and on a phone.","mission":"Give every client a crew that plans carefully, shoots calmly and delivers on the promised date."}', 1),
 ('about', 'approach', 'Approach', 'How the studio works', '{"steps":[{"title":"Research","desc":"We read, scout and talk to people before a single frame is shot."},{"title":"Plan","desc":"Treatment, schedule, crew and budget agreed in writing."},{"title":"Shoot","desc":"Small, fast crews with broadcast grade equipment."},{"title":"Deliver","desc":"Edit, grade, mix and master in every format you need."}]}', 1),
+('about', 'team', 'Team', 'Heading for the team grid on About', '{"heading":"The crew","subheading":"Directors, cinematographers and editors who shoot together.","enabled":"1"}', 1),
 ('contact', 'info', 'Contact Info', 'Phone, email and studio address', '{"heading":"Start a project","subheading":"Tell us about the film you need. We usually reply within one working day.","phone":"+880 1712 345678","email":"hello@lenscraftproduction.com","address":"Dhanmondi, Dhaka 1209, Bangladesh","hours":"Sun–Thu · 10:00–19:00"}', 1),
 ('home', 'brands', 'Brand Strip', 'Logos of brands the studio has worked with', '{"heading":"Trusted by brands & broadcasters","enabled":"1"}', 1);
 
@@ -78,6 +80,11 @@ INSERT INTO packages (name, slug, tagline, description, price_from, price_label,
 ('Commercial Essentials', 'commercial-essentials', 'Brand film in two weeks', 'Concept to screen for product launches, campaigns and TVCs — a fast crew with broadcast-ready delivery.', 450000, 'From', 'BDT', '["Creative treatment & storyboard","1–2 shoot days (studio or location)","Talent & product styling support","Edit, grade and sound mix","Master for TV, web and social"]', 'Commercial', 2, 1, 1, 'Get a quote'),
 ('Event Coverage', 'event-coverage', 'Same-week recap included', 'Multi-camera coverage for launches, festivals and conferences with a recap cut within 48 hours.', 180000, 'From', 'BDT', '["2–3 camera crew on site","Live switching or multi-cam edit","Same-week 60–90s recap","Full event film within 5 days","Stills package add-on available"]', 'Events', 3, 0, 1, 'Book coverage'),
 ('Film & Natok', 'film-natok', 'Narrative production unit', 'A narrative unit for OTT, television and independent release — script breakdown through final master.', 850000, 'From', 'BDT', '["Script breakdown & schedule","5+ shoot days with full unit","Casting & location support","Offline + online edit","Sound design and final master"]', 'Film & Natok', 4, 0, 1, 'Start a project');
+
+INSERT INTO team_members (name, role, bio, sort_order, is_active) VALUES
+('Bayzed Kabir', 'Director / Founder', 'Leads treatments, shoots and the final grade for every LensCraft film.', 1, 1),
+('Studio Editor', 'Editor', 'Offline to online edit, sound pass and delivery masters.', 2, 1),
+('Field Producer', 'Producer', 'Schedules, permits and crew coordination across Bangladesh.', 3, 1);
 
 INSERT INTO media (id, title, alt, filename, path, mime, type, width, height, size_bytes) VALUES
 (1, 'River of Voices still', 'Boat on a river at sunrise', 'river-still-01.jpg', 'images/river-still-01.jpg', 'image/jpeg', 'image', 1920, 1080, 486000),

@@ -30,6 +30,7 @@ $router->post('/admin/projects', 'Admin\ProjectController@store');
 $router->get('/admin/projects/{id}/edit', 'Admin\ProjectController@edit');
 $router->post('/admin/projects/{id}', 'Admin\ProjectController@update');
 $router->post('/admin/projects/{id}/delete', 'Admin\ProjectController@destroy');
+$router->post('/admin/projects/{id}/move', 'Admin\ProjectController@move');
 
 // ------------------------------------------------------------- admin: videos
 $router->get('/admin/videos', 'Admin\VideoController@index');
@@ -72,12 +73,21 @@ $router->get('/admin/brands', 'Admin\BrandController@index');
 $router->post('/admin/brands', 'Admin\BrandController@store');
 $router->post('/admin/brands/{id}', 'Admin\BrandController@update');
 $router->post('/admin/brands/{id}/delete', 'Admin\BrandController@destroy');
+$router->post('/admin/brands/{id}/move', 'Admin\BrandController@move');
 
 // ----------------------------------------------------------- admin: packages
 $router->get('/admin/packages', 'Admin\PackageController@index');
 $router->post('/admin/packages', 'Admin\PackageController@store');
 $router->post('/admin/packages/{id}', 'Admin\PackageController@update');
 $router->post('/admin/packages/{id}/delete', 'Admin\PackageController@destroy');
+$router->post('/admin/packages/{id}/move', 'Admin\PackageController@move');
+
+// --------------------------------------------------------------- admin: team
+$router->get('/admin/team', 'Admin\TeamController@index');
+$router->post('/admin/team', 'Admin\TeamController@store');
+$router->post('/admin/team/{id}', 'Admin\TeamController@update');
+$router->post('/admin/team/{id}/delete', 'Admin\TeamController@destroy');
+$router->post('/admin/team/{id}/move', 'Admin\TeamController@move');
 
 // ------------------------------------------------------------ admin: content
 $router->get('/admin/content', 'Admin\ContentController@index');

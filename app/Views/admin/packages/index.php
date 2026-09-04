@@ -3,12 +3,26 @@
     <article class="card card--flush">
         <table class="table table--wide">
             <thead>
-            <tr><th>Order</th><th>Package</th><th>Price</th><th>Type</th><th>Status</th><th class="right">Actions</th></tr>
+            <tr><th>Order</th><th>Package</th><th>Price (admin)</th><th>Type</th><th>Status</th><th class="right">Actions</th></tr>
             </thead>
             <tbody>
             <?php foreach ($packages as $package): ?>
                 <tr>
-                    <td class="mono"><?= str_pad((string) $package['sort_order'], 2, '0', STR_PAD_LEFT) ?></td>
+                    <td>
+                        <div class="order-controls">
+                            <form method="post" action="<?= url('/admin/packages/' . $package['id'] . '/move') ?>">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="direction" value="up">
+                                <button class="link" type="submit" title="Move up">↑</button>
+                            </form>
+                            <span class="mono"><?= str_pad((string) $package['sort_order'], 2, '0', STR_PAD_LEFT) ?></span>
+                            <form method="post" action="<?= url('/admin/packages/' . $package['id'] . '/move') ?>">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="direction" value="down">
+                                <button class="link" type="submit" title="Move down">↓</button>
+                            </form>
+                        </div>
+                    </td>
                     <td>
                         <strong><?= e($package['name']) ?></strong>
                         <?php if ($package['is_featured']): ?><span class="tag">Featured</span><?php endif; ?>

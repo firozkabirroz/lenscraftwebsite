@@ -70,6 +70,13 @@ class PackageController extends Controller
         redirect('/admin/packages');
     }
 
+    public function move(string $id): void
+    {
+        $this->postGuard();
+        Package::move((int) $id, (string) input('direction', 'down'));
+        redirect('/admin/packages');
+    }
+
     private function payload(string $name, ?int $ignoreId = null): array
     {
         $slug = trim((string) input('slug'));

@@ -1,10 +1,18 @@
 <?php /** @var array $project @var array $gallery @var array $related */ ?>
-<section class="project-hero" <?= $project['cover_path'] ? 'style="background-image:url(' . e(uploaded($project['cover_path'])) . ')"' : '' ?>>
-    <div class="project-hero__inner">
-        <p class="eyebrow"><?= e($project['category']) ?> · <?= e((string) $project['year']) ?></p>
-        <h1><?= e($project['title']) ?></h1>
-        <p class="project-hero__sub"><?= e($project['summary']) ?></p>
-    </div>
+<section class="project-cover">
+    <?php if ($project['cover_path']): ?>
+        <img class="project-cover__image" src="<?= e(uploaded($project['cover_path'])) ?>" alt="<?= e($project['title']) ?>">
+    <?php else: ?>
+        <div class="project-cover__placeholder"></div>
+    <?php endif; ?>
+</section>
+
+<section class="section project-intro">
+    <p class="eyebrow"><?= e($project['category']) ?> · <?= e((string) $project['year']) ?></p>
+    <h1><?= e($project['title']) ?></h1>
+    <?php if ($project['summary']): ?>
+        <p class="project-intro__sub"><?= e($project['summary']) ?></p>
+    <?php endif; ?>
 </section>
 
 <section class="section project-body">

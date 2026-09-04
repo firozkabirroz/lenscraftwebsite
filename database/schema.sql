@@ -254,6 +254,19 @@ CREATE TABLE IF NOT EXISTS packages (
   KEY idx_package_active (is_active)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS team_members (
+  id             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name           VARCHAR(120) NOT NULL,
+  role           VARCHAR(120) NULL,
+  bio            TEXT NULL,
+  photo_media_id INT UNSIGNED NULL,
+  sort_order     INT NOT NULL DEFAULT 0,
+  is_active      TINYINT(1) NOT NULL DEFAULT 1,
+  created_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_team_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS activity_log (
   id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id     INT UNSIGNED NULL,

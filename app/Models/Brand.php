@@ -47,4 +47,9 @@ class Brand
     {
         Database::delete('brands', 'id = ?', [$id]);
     }
+
+    public static function move(int $id, string $direction): bool
+    {
+        return \App\Models\TeamMember::swapOrder('brands', $id, $direction);
+    }
 }

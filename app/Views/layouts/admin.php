@@ -18,6 +18,7 @@ $navItems = [
     ['key' => 'clients',   'label' => 'Clients',   'url' => url('/admin/clients')],
     ['key' => 'brands',    'label' => 'Brands',    'url' => url('/admin/brands')],
     ['key' => 'packages',  'label' => 'Packages',  'url' => url('/admin/packages')],
+    ['key' => 'team',      'label' => 'Team',      'url' => url('/admin/team')],
     ['key' => 'analytics', 'label' => 'Analytics', 'url' => url('/admin/analytics')],
     ['key' => 'settings',  'label' => 'Settings',  'url' => url('/admin/settings')],
 ];
@@ -29,9 +30,7 @@ $navItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e(($pageTitle ?? 'Admin') . ' — LensCraft Admin') ?></title>
     <meta name="robots" content="noindex">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<?= asset('css/site.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/admin.css') ?>">
     <link rel="icon" href="<?= asset('img/logo.svg') ?>" type="image/svg+xml">
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">

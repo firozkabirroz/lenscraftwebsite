@@ -70,6 +70,11 @@ class Content
         'about.approach' => [
             'steps' => ['label' => 'Approach steps', 'type' => 'repeater', 'fields' => ['title' => 'Title', 'desc' => 'Description']],
         ],
+        'about.team' => [
+            'heading'    => ['label' => 'Section heading', 'type' => 'text'],
+            'subheading' => ['label' => 'Section subheading', 'type' => 'textarea'],
+            'enabled'    => ['label' => 'Show team on About page', 'type' => 'toggle'],
+        ],
         'contact.info' => [
             'heading'    => ['label' => 'Heading', 'type' => 'text'],
             'subheading' => ['label' => 'Subheading', 'type' => 'textarea'],

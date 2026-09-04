@@ -72,6 +72,11 @@ class Package
         Database::delete('packages', 'id = ?', [$id]);
     }
 
+    public static function move(int $id, string $direction): bool
+    {
+        return \App\Models\TeamMember::swapOrder('packages', $id, $direction);
+    }
+
     public static function uniqueSlug(string $name, ?int $ignoreId = null): string
     {
         $base = slugify($name);

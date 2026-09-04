@@ -1,4 +1,4 @@
-<?php /** @var array $vision @var array $approach @var array $projects */ ?>
+<?php /** @var array $vision @var array $approach @var array $projects @var array $teamIntro @var array $team */ ?>
 <section class="page-hero">
     <p class="eyebrow">Studio</p>
     <h1><?= e($hero['heading'] ?? 'About LensCraft') ?></h1>
@@ -16,7 +16,31 @@
     </article>
 </section>
 
-<section class="section section--alt">
+<?php if (($teamIntro['enabled'] ?? '1') === '1' && $team): ?>
+    <section class="section section--alt" id="team">
+        <div class="section__head">
+            <div>
+                <p class="eyebrow">People</p>
+                <h2><?= e($teamIntro['heading'] ?? 'The crew') ?></h2>
+                <p class="section__sub"><?= e($teamIntro['subheading'] ?? '') ?></p>
+            </div>
+        </div>
+        <div class="team-grid">
+            <?php foreach ($team as $member): ?>
+                <article class="team-card">
+                    <div class="team-card__photo" <?= $member['photo_path'] ? 'style="background-image:url(' . e(uploaded($member['photo_path'])) . ')"' : '' ?>></div>
+                    <div class="team-card__body">
+                        <h3><?= e($member['name']) ?></h3>
+                        <?php if ($member['role']): ?><p class="team-card__role"><?= e($member['role']) ?></p><?php endif; ?>
+                        <?php if ($member['bio']): ?><p><?= e($member['bio']) ?></p><?php endif; ?>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </section>
+<?php endif; ?>
+
+<section class="section">
     <div class="section__head">
         <div>
             <p class="eyebrow">How we work</p>
@@ -35,7 +59,7 @@
 </section>
 
 <?php if ($projects): ?>
-    <section class="section">
+    <section class="section section--alt">
         <div class="section__head">
             <h2>Recent films</h2>
             <a class="link-arrow" href="<?= url('/work') ?>">All work →</a>

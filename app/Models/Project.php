@@ -124,6 +124,11 @@ class Project
         Database::delete('projects', 'id = ?', [$id]);
     }
 
+    public static function move(int $id, string $direction): bool
+    {
+        return \App\Models\TeamMember::swapOrder('projects', $id, $direction);
+    }
+
     public static function incrementViews(int $id): void
     {
         Database::run('UPDATE projects SET views = views + 1 WHERE id = ?', [$id]);
