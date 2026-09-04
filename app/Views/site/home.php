@@ -54,19 +54,26 @@ $dim = ($hero['dim_overlay'] ?? '1') === '1';
 <?php if (($brandStrip['enabled'] ?? '1') === '1' && $brands): ?>
     <section class="brand-strip" aria-label="Brands we have worked with">
         <p class="brand-strip__label"><?= e($brandStrip['heading'] ?? 'Trusted by brands & broadcasters') ?></p>
-        <div class="brand-strip__track">
-            <?php foreach ($brands as $brand): ?>
-                <?php $tag = $brand['website'] ? 'a' : 'span'; ?>
-                <<?= $tag ?> class="brand-strip__item"
-                    <?= $brand['website'] ? 'href="' . e($brand['website']) . '" target="_blank" rel="noopener"' : '' ?>
-                    title="<?= e($brand['name']) ?>">
-                    <?php if ($brand['logo_path']): ?>
-                        <img src="<?= e(brand_logo($brand['logo_path'])) ?>" alt="<?= e($brand['name']) ?>" loading="lazy">
-                    <?php else: ?>
-                        <em><?= e($brand['name']) ?></em>
-                    <?php endif; ?>
-                </<?= $tag ?>>
-            <?php endforeach; ?>
+        <div class="brand-strip__viewport">
+            <div class="brand-strip__track">
+                <?php
+                // Duplicate once so the marquee loops seamlessly.
+                $logoPasses = array_merge($brands, $brands);
+                foreach ($logoPasses as $i => $brand):
+                    $tag = $brand['website'] ? 'a' : 'span';
+                ?>
+                    <<?= $tag ?> class="brand-strip__item"
+                        <?= $brand['website'] ? 'href="' . e($brand['website']) . '" target="_blank" rel="noopener"' : '' ?>
+                        title="<?= e($brand['name']) ?>"
+                        <?= $i >= count($brands) ? 'aria-hidden="true" tabindex="-1"' : '' ?>>
+                        <?php if ($brand['logo_path']): ?>
+                            <img src="<?= e(brand_logo($brand['logo_path'])) ?>" alt="<?= $i >= count($brands) ? '' : e($brand['name']) ?>" loading="lazy">
+                        <?php else: ?>
+                            <em><?= e($brand['name']) ?></em>
+                        <?php endif; ?>
+                    </<?= $tag ?>>
+                <?php endforeach; ?>
+            </div>
         </div>
     </section>
 <?php endif; ?>
