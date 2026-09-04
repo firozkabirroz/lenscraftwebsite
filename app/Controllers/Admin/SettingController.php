@@ -55,6 +55,7 @@ class SettingController extends Controller
         $user = Auth::user();
         $current = (string) input('current_password');
         $new = (string) input('new_password');
+        $confirm = (string) input('new_password_confirm');
 
         if (!$user || !password_verify($current, $user['password_hash'])) {
             flash('error', 'Your current password is not correct.');
@@ -64,11 +65,16 @@ class SettingController extends Controller
             flash('error', 'Use at least 8 characters for the new password.');
             redirect('/admin/settings');
         }
+        if ($new !== $confirm) {
+            flash('error', 'New password and confirmation do not match.');
+            redirect('/admin/settings');
+        }
 
         Database::update('users', ['password_hash' => password_hash($new, PASSWORD_BCRYPT)], 'id = :id', ['id' => $user['id']]);
         Activity::log('changed password', 'user', (int) $user['id'], $user['email']);
+        Auth::forgetUserCache();
 
-        flash('success', 'Password updated.');
+        flash('success', 'Password updated and saved to the database.');
         redirect('/admin/settings');
     }
 

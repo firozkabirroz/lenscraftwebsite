@@ -79,8 +79,10 @@
             <h2 class="card__label">YOUR PASSWORD</h2>
             <form method="post" action="<?= url('/admin/settings/password') ?>">
                 <?= csrf_field() ?>
-                <label class="field"><span>Current password</span><input type="password" name="current_password" required></label>
-                <label class="field"><span>New password</span><input type="password" name="new_password" required></label>
+                <label class="field"><span>Current password</span><input type="password" name="current_password" required autocomplete="current-password"></label>
+                <label class="field"><span>New password</span><input type="password" name="new_password" required minlength="8" autocomplete="new-password"></label>
+                <label class="field"><span>Confirm new password</span><input type="password" name="new_password_confirm" required minlength="8" autocomplete="new-password"></label>
+                <p class="muted">New password is saved as a secure hash in the database — never in the code.</p>
                 <div class="btn-row"><button class="btn btn--primary btn--sm" type="submit">Update Password</button></div>
             </form>
         </article>

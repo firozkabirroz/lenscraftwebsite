@@ -78,7 +78,6 @@ $pageTitle = isset($title) && $title ? $title . ' — ' . $studio : $studio . ' 
             <?php if (!empty($settings['instagram'])): ?><a href="<?= e($settings['instagram']) ?>" target="_blank" rel="noopener">Instagram</a><?php endif; ?>
             <?php if (!empty($settings['youtube'])): ?><a href="<?= e($settings['youtube']) ?>" target="_blank" rel="noopener">YouTube</a><?php endif; ?>
             <?php if (!empty($settings['facebook'])): ?><a href="<?= e($settings['facebook']) ?>" target="_blank" rel="noopener">Facebook</a><?php endif; ?>
-            <a href="<?= url('/admin') ?>">Studio Login</a>
         </div>
     </div>
     <div class="footer__base">

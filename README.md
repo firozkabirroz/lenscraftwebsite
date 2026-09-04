@@ -44,12 +44,15 @@ php tools\generate-placeholders.php
 
 ### Admin logins
 
-| Role   | Email                            | Password       |
-|--------|----------------------------------|----------------|
+After seeding, the first owner account is created in the **database** (`users.password_hash`).
+Change it immediately from **Settings → Your password** — the new password is bcrypt-hashed and stored only in MySQL, never in source code.
+
+| Role   | Email (seed only)                | Initial password (seed only) |
+|--------|----------------------------------|------------------------------|
 | Owner  | studio@lenscraftproduction.com   | `lenscraft123` |
 | Editor | editor@lenscraftproduction.com   | `editor123`    |
 
-Change both passwords from **Settings → Your password** before going live.
+Admin URL: `/admin` (not linked from the public site).
 
 ## Running without Apache
 

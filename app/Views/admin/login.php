@@ -6,12 +6,12 @@
 
     <label class="field">
         <span>Email</span>
-        <input type="email" name="email" value="<?= e((string) old('email', 'studio@lenscraftproduction.com')) ?>" required autofocus>
+        <input type="email" name="email" value="<?= e((string) old('email')) ?>" required autofocus autocomplete="username">
     </label>
 
     <label class="field">
         <span>Password</span>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required autocomplete="current-password">
     </label>
 
     <div class="auth-card__row">
@@ -24,5 +24,5 @@
     </div>
 
     <button class="btn btn--primary btn--block" type="submit">Sign In</button>
-    <p class="auth-card__foot">Protected area · demo login: studio@lenscraftproduction.com / lenscraft123</p>
+    <p class="auth-card__foot">Protected area · passwords are stored only in the database</p>
 </form>

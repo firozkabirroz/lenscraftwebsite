@@ -4,6 +4,9 @@ namespace App\Support;
 
 class Auth
 {
+    private static ?array $cachedUser = null;
+    private static bool $userLoaded = false;
+
     public static function attempt(string $email, string $password): bool
     {
         $user = Database::first('SELECT * FROM users WHERE email = ? LIMIT 1', [$email]);
@@ -14,6 +17,7 @@ class Auth
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = (int) $user['id'];
+        self::forgetUserCache();
 
         Database::update('users', ['last_login_at' => date('Y-m-d H:i:s')], 'id = :id', ['id' => $user['id']]);
         Activity::log('signed in', 'session', (int) $user['id'], $_SERVER['REMOTE_ADDR'] ?? '', (int) $user['id']);
@@ -23,6 +27,7 @@ class Auth
 
     public static function logout(): void
     {
+        self::forgetUserCache();
         $_SESSION = [];
         session_destroy();
     }
@@ -34,16 +39,23 @@ class Auth
 
     public static function user(): ?array
     {
-        static $cached = null;
-
         if (!self::check()) {
             return null;
         }
-        if ($cached === null) {
-            $cached = Database::first('SELECT * FROM users WHERE id = ? LIMIT 1', [$_SESSION['user_id']]);
+
+        if (!self::$userLoaded) {
+            self::$cachedUser = Database::first('SELECT * FROM users WHERE id = ? LIMIT 1', [$_SESSION['user_id']]);
+            self::$userLoaded = true;
         }
 
-        return $cached;
+        return self::$cachedUser;
+    }
+
+    /** Clear the per-request user cache after password / profile changes. */
+    public static function forgetUserCache(): void
+    {
+        self::$cachedUser = null;
+        self::$userLoaded = false;
     }
 
     public static function id(): ?int
