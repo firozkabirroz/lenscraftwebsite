@@ -1349,12 +1349,16 @@ body.is-leaving main, body.is-leaving .footer, body.is-leaving .footer-cta { opa
 .hero__video { pointer-events: none; }
 
 /* ------------------------------------------------ nav while over the hero */
-.nav.is-over-hero { border-bottom-color: transparent; }
+/* The base nav is solid cream for contrast on light pages; over the dark
+   hero it must drop that fill, or the cream links vanish into it. */
+.nav.is-over-hero,
 .nav.is-stuck.is-over-hero {
     background: linear-gradient(180deg, rgba(11, 15, 12, 0.55), transparent);
     border-bottom-color: transparent;
+    box-shadow: none;
 }
-.nav.is-over-hero .nav__brand { color: var(--cream); }
+.nav.is-over-hero .nav__brand,
+.nav.is-over-hero .nav__brand span { color: var(--cream); }
 /* The wordmark is a forest-green SVG loaded via <img>, so it can only be
    recoloured with a filter. */
 .nav.is-over-hero .nav__brand img { filter: brightness(0) invert(1); opacity: 0.92; }
