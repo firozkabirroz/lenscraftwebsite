@@ -67,7 +67,7 @@
         <div class="grid grid--work">
             <?php foreach ($projects as $project): ?>
                 <a class="card-work" href="<?= url('/work/' . $project['slug']) ?>">
-                    <div class="card-work__thumb" <?= $project['cover_path'] ? 'style="background-image:url(' . e(uploaded($project['cover_path'])) . ')"' : '' ?>></div>
+                    <?= work_thumb($project) ?>
                     <div class="card-work__body">
                         <h3><?= e($project['title']) ?></h3>
                         <span class="card-work__meta"><?= e($project['category']) ?> · <?= e((string) $project['year']) ?></span>

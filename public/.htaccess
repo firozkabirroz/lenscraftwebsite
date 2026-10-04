@@ -24,3 +24,38 @@ Options -Indexes
         Require all denied
     </If>
 </FilesMatch>
+
+# ---------------------------------------------------------------- performance
+# asset() appends ?v=<mtime>, so a deploy changes the URL and these long
+# lifetimes never serve a stale stylesheet. Every block is guarded, so this
+# stays inert on a host without the module.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                "access plus 1 year"
+    ExpiresByType application/javascript  "access plus 1 year"
+    ExpiresByType image/svg+xml           "access plus 1 year"
+    ExpiresByType image/webp              "access plus 6 months"
+    ExpiresByType image/jpeg              "access plus 6 months"
+    ExpiresByType image/png               "access plus 6 months"
+    ExpiresByType video/mp4               "access plus 6 months"
+    ExpiresByType font/woff2              "access plus 1 year"
+    ExpiresDefault                        "access plus 2 days"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Uploads keep their filename across replacements, so they may not be
+    # versioned — revalidate instead of trusting a long lifetime.
+    <FilesMatch "\.(?:jpg|jpeg|png|webp|gif|mp4|webm)$">
+        Header set Cache-Control "public, max-age=604800, must-revalidate"
+    </FilesMatch>
+    <FilesMatch "\.(?:css|js|woff2|svg)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>

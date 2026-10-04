@@ -10,6 +10,9 @@ public/uploads/**
 storage/temp/**
 !storage/temp/.gitignore
 
+# Local preview harness (no local DB, so this renders the design standalone)
+public/_preview.html
+
 # OS / editor
 .DS_Store
 Thumbs.db

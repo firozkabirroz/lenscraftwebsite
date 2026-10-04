@@ -31,8 +31,30 @@ $value = static fn (string $key, string $fallback = '') => e((string) ($project[
         </article>
 
         <article class="card">
+            <h2 class="card__label">CASE STUDY</h2>
+            <p class="muted">Each block is optional. Any you leave empty is simply skipped on the public page.</p>
+            <label class="field"><span>Challenge</span><textarea name="challenge" rows="4" placeholder="What the client came to us with."><?= $value('challenge') ?></textarea></label>
+            <label class="field"><span>Approach</span><textarea name="approach" rows="4" placeholder="How the studio tackled it."><?= $value('approach') ?></textarea></label>
+            <label class="field"><span>Result</span><textarea name="outcome" rows="4" placeholder="What the film delivered."><?= $value('outcome') ?></textarea></label>
+        </article>
+
+        <article class="card">
+            <h2 class="card__label">CLIENT QUOTE</h2>
+            <label class="field"><span>Quote</span><textarea name="quote_text" rows="3" placeholder="Leave empty to hide the quote card."><?= $value('quote_text') ?></textarea></label>
+            <div class="field-row">
+                <label class="field"><span>Attributed to</span><input type="text" name="quote_author" value="<?= $value('quote_author') ?>" maxlength="160"></label>
+                <label class="field"><span>Role / organisation</span><input type="text" name="quote_role" value="<?= $value('quote_role') ?>" maxlength="160"></label>
+            </div>
+        </article>
+
+        <article class="card">
             <h2 class="card__label">MEDIA</h2>
             <label class="field"><span>Hero video URL (YouTube / Vimeo)</span><input type="url" name="hero_video_url" value="<?= $value('hero_video_url') ?>" placeholder="https://vimeo.com/…"></label>
+            <label class="field">
+                <span>Hover preview clip</span>
+                <input type="text" name="preview_video_path" value="<?= $value('preview_video_path') ?>" placeholder="uploads/videos/clip.mp4 or https://…">
+                <small class="muted">A silent 3–4 second loop played when someone hovers this project in the work grid. Upload it under Media first, then paste its path. Falls back to the hero video URL when empty.</small>
+            </label>
             <label class="field">
                 <span>Linked video from the library</span>
                 <select name="video_id">

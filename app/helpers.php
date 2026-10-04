@@ -32,11 +32,21 @@ function url(string $path = '/'): string
     return $base . ($path === '/' ? '/' : rtrim($path, '/'));
 }
 
+/**
+ * Public URL for a file in public/assets.
+ *
+ * Appends the file's mtime as a version query so a deploy invalidates the
+ * browser cache on its own — there is no build step here to hash filenames,
+ * and the stylesheet is now the single source of the whole design system.
+ */
 function asset(string $path): string
 {
-    $base = rtrim((string) config('base_url'), '/');
+    $relative = ltrim($path, '/');
+    $url = rtrim((string) config('base_url'), '/') . '/assets/' . $relative;
+    $file = dirname(__DIR__) . '/public/assets/' . $relative;
+    $mtime = is_file($file) ? filemtime($file) : false;
 
-    return $base . '/assets/' . ltrim($path, '/');
+    return $mtime === false ? $url : $url . '?v=' . $mtime;
 }
 
 function uploaded(?string $path): string
@@ -367,8 +377,42 @@ function embed_provider(?string $url): string
  * Data attributes for the hover video preview on work cards.
  * Local files play in a <video>, YouTube/Vimeo in a muted background iframe.
  */
-function preview_attrs(?string $url): string
+/**
+ * Work-card thumbnail.
+ *
+ * A real <img> rather than a CSS background image: the browser can then
+ * lazy-load it, and the hover clip genuinely cross-fades over a picture
+ * instead of over a painted box. alt is intentionally empty because the
+ * card's own heading already names the project.
+ */
+function work_thumb(array $row, bool $eager = false): string
 {
+    $src = uploaded($row['cover_path'] ?? '');
+
+    if ($src === '') {
+        return '<div class="card-work__thumb card-work__thumb--empty"></div>';
+    }
+
+    return '<div class="card-work__thumb"><img src="' . e($src) . '" alt="" '
+        . ($eager ? 'fetchpriority="high"' : 'loading="lazy"')
+        . ' decoding="async"></div>';
+}
+
+/**
+ * Hover-preview attributes for a work card.
+ *
+ * A short self-hosted clip is always preferred: it is a plain muted <video>,
+ * so it cross-fades cleanly, costs a fraction of an embed, and does not
+ * swallow pointer events the way a cross-origin iframe does. The YouTube or
+ * Vimeo hero URL is only the fallback for projects with no clip yet.
+ */
+function preview_attrs(?string $url, ?string $localClip = null): string
+{
+    $clip = trim((string) $localClip);
+    if ($clip !== '') {
+        return ' data-preview="' . e(uploaded($clip)) . '" data-preview-kind="video"';
+    }
+
     $url = trim((string) $url);
     if ($url === '') {
         return '';

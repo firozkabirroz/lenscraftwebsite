@@ -5,12 +5,16 @@ $studio = $settings['studio_name'] ?? 'LensCraft Production';
 $pageTitle = isset($title) && $title ? $title . ' — ' . $studio : $studio . ' — ' . ($settings['tagline'] ?? '');
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
+    <script>document.documentElement.className=document.documentElement.className.replace("no-js","has-js");</script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?></title>
     <meta name="description" content="<?= e($settings['meta_description'] ?? '') ?>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@300..600&display=swap">
     <link rel="stylesheet" href="<?= asset('css/site.css') ?>">
     <link rel="icon" href="<?= asset('img/logo.svg') ?>" type="image/svg+xml">
 </head>
@@ -35,7 +39,7 @@ $pageTitle = isset($title) && $title ? $title . ' — ' . $studio : $studio . ' 
         </nav>
         <div class="nav__actions">
             <a class="btn btn--primary btn--sm" href="<?= url('/contact') ?>">Start a Project</a>
-            <button class="nav__toggle" id="navToggle" aria-label="Menu">☰</button>
+            <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button>
         </div>
     </div>
 </header>
@@ -44,7 +48,9 @@ $pageTitle = isset($title) && $title ? $title . ' — ' . $studio : $studio . ' 
 <?= $content ?>
 </main>
 
-<?php if (current_path() !== '/contact'): ?>
+<?php /* The green cta-band is the primary closing CTA; this only fills in
+         on pages that do not render one, so no page asks twice. */ ?>
+<?php if (current_path() !== '/contact' && strpos($content, 'cta-band') === false): ?>
     <a class="footer-cta" href="<?= url('/contact') ?>">
         <span class="footer-cta__label">Have a project in mind?</span>
         <span class="footer-cta__title">Start a Project <em>→</em></span>
@@ -86,6 +92,7 @@ $pageTitle = isset($title) && $title ? $title . ' — ' . $studio : $studio . ' 
     </div>
 </footer>
 
+<script src="<?= asset('js/vendor/lenis.min.js') ?>"></script>
 <script src="<?= asset('js/site.js') ?>"></script>
 </body>
 </html>

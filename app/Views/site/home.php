@@ -90,8 +90,8 @@ $dim = ($hero['dim_overlay'] ?? '1') === '1';
 
     <div class="grid grid--work">
         <?php foreach ($projects as $project): ?>
-            <a class="card-work" href="<?= url('/work/' . $project['slug']) ?>"<?= preview_attrs($project['hero_video_url'] ?? '') ?>>
-                <div class="card-work__thumb" <?= $project['cover_path'] ? 'style="background-image:url(' . e(uploaded($project['cover_path'])) . ')"' : '' ?>></div>
+            <a class="card-work" href="<?= url('/work/' . $project['slug']) ?>"<?= preview_attrs($project['hero_video_url'] ?? '', $project['preview_video_path'] ?? null) ?>>
+                <?= work_thumb($project) ?>
                 <div class="card-work__body">
                     <span class="card-work__cat"><?= e($project['category']) ?></span>
                     <h3><?= e($project['title']) ?></h3>

@@ -19,7 +19,7 @@ try {
 } catch (Throwable $e) {
     if (config('app_debug')) {
         http_response_code(500);
-        echo '<pre style="background:#0B0B0B;color:#F5F5F5;padding:24px;font:13px/1.6 monospace">';
+        echo '<pre style="background:#2A2A2A;color:#F5F3ED;padding:24px;font:13px/1.6 monospace">';
         echo e($e->getMessage()) . "\n\n" . e($e->getTraceAsString());
         echo '</pre>';
         exit;
